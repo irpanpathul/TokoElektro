@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Toko Elektro - Solusi Komponen Elektronika</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- NAVIGASI -->
+    <nav class="bg-white shadow-sm sticky top-0 z-50 border-b border-gray-100">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="flex justify-between items-center h-16">
+
+                <div class="flex items-center space-x-3 cursor-pointer" onclick="showPage('shop')">
+                    <div class="w-11 h-11 logo-box rounded-xl flex flex-col items-center justify-center text-white shadow">
+                        <span class="text-[9px] font-black leading-none mb-0.5 tracking-widest">TE</span>
+                        <i class="fas fa-bolt text-base"></i>
+                    </div>
+                    <div>
+                        <span class="font-extrabold text-lg tracking-tight text-slate-800">Toko Elektro</span>
+                        <p class="text-[10px] text-slate-400 font-medium leading-none">Komponen Elektronika</p>
+                    </div>
+                </div>
+
+                <!-- Pencarian Desktop (tanpa placeholder contoh) -->
+                <div class="hidden md:flex flex-1 mx-8">
+                    <div class="relative w-full">
+                        <input type="text" id="searchInput" onkeyup="filterProduk()"
+                            placeholder="Cari komponen elektronika..."
+                            class="w-full bg-slate-50 border border-slate-200 rounded-xl py-2.5 px-10 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all outline-none">
+                        <i class="fas fa-search absolute left-3.5 top-3 text-slate-400 text-sm"></i>
+                    </div>
+                </div>
+
+                <div class="flex items-center space-x-5 text-slate-500 font-semibold text-sm">
+                    <button onclick="showPage('shop')" id="btn-shop" class="nav-active py-5 px-1 hover:text-blue-600 transition">Belanja</button>
+                    <button onclick="showPage('history')" id="btn-history" class="py-5 px-1 hover:text-blue-600 transition">Transaksi</button>
+                    <button onclick="showPage('profile')" id="btn-profile" class="py-5 px-1 hover:text-blue-600 transition text-xl">
+                        <i class="fas fa-user-circle" id="userIcon"></i>
+                    </button>
+                    <div class="relative cursor-pointer" onclick="toggleCart()">
+                        <i class="fas fa-shopping-cart text-lg"></i>
+                        <span id="cartCount" class="absolute -top-2 -right-2 bg-red-500 text-white text-[9px] rounded-full w-4 h-4 flex items-center justify-center font-bold">0</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- KONTEN UTAMA -->
+    <main class="max-w-6xl mx-auto p-4 mt-6 min-h-[70vh]">
+
+        <!-- HALAMAN: AUTH -->
+        <section id="page-auth" class="hide">
+            <div class="max-w-md mx-auto bg-white rounded-2xl shadow-lg p-8 border border-slate-100">
+                <div id="auth-title" class="text-center mb-8">
+                    <div class="w-14 h-14 logo-box rounded-2xl flex items-center justify-center mx-auto mb-4 shadow">
+                        <i class="fas fa-bolt text-white text-xl"></i>
+                    </div>
+                    <h2 class="text-xl font-bold text-slate-800">Masuk ke Akun</h2>
+                    <p class="text-slate-400 text-sm mt-1">Lanjutkan pengalaman belanja Anda</p>
+                </div>
+
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-500 mb-1.5 uppercase tracking-wider">Alamat Email</label>
+                        <input type="email" id="auth-email" placeholder="contoh@email.com"
+                            class="w-full p-3.5 bg-slate-50 border border-slate-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-500 mb-1.5 uppercase tracking-wider">Kata Sandi</label>
+                        <input type="password" id="auth-pass" placeholder="Masukkan kata sandi"
+                            class="w-full p-3.5 bg-slate-50 border border-slate-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
+                        <div class="text-right mt-1.5">
+                            <a href="#" onclick="showForgotPassword()"
+                               class="text-xs text-blue-600 hover:underline font-medium">Lupa kata sandi?</a>
+                        </div>
+                    </div>
+                    <button onclick="handleAuth()" id="btn-auth-submit"
+                        class="w-full bg-blue-600 text-white py-3.5 rounded-xl font-bold text-sm hover:bg-blue-700 transition shadow-md mt-2">
+                        Masuk
+                    </button>
+                    <p class="text-center text-sm text-slate-400 mt-2">
+                        <span id="auth-toggle-text">Belum memiliki akun?</span>&nbsp;
+                        <a href="#" onclick="toggleAuthMode()" id="auth-toggle-link"
+                           class="text-blue-600 font-bold hover:underline">Daftar Sekarang</a>
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- HALAMAN: BELANJA -->
+        <section id="page-shop">
+            <div class="flex justify-between items-center mb-6">
+                <div>
+                    <h2 class="text-xl font-bold text-slate-800">Katalog Produk</h2>
+                    <p class="text-sm text-slate-400 mt-0.5">Temukan komponen elektronika terbaik</p>
+                </div>
+                <div class="md:hidden">
+                    <button onclick="toggleMobileSearch()" class="p-2.5 bg-white rounded-xl shadow-sm border border-slate-100 text-slate-500">
+                        <i class="fas fa-search text-sm"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div id="mobileSearch" class="hide mb-4">
+                <input type="text" onkeyup="filterProdukMobile(this.value)"
+                    placeholder="Cari produk..."
+                    class="w-full p-3 rounded-xl border border-slate-200 bg-white shadow-sm text-sm focus:ring-2 focus:ring-blue-500 outline-none">
+            </div>
+
+            <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5"></div>
+        </section>
+
+        <!-- HALAMAN: RIWAYAT -->
+        <section id="page-history" class="hide">
+            <div class="mb-6">
+                <h2 class="text-xl font-bold text-slate-800">Riwayat Transaksi</h2>
+                <p class="text-sm text-slate-400 mt-0.5">Daftar semua pesanan yang telah dilakukan</p>
+            </div>
+            <div id="historyList" class="space-y-4">
+                <div class="text-center py-20 text-slate-400 bg-white rounded-2xl border border-slate-100">
+                    <i class="fas fa-receipt text-4xl mb-4 text-slate-300"></i>
+                    <p class="font-semibold text-sm">Belum ada transaksi</p>
+                    <p class="text-xs mt-1">Mulai belanja untuk melihat riwayat di sini</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- HALAMAN: PROFIL -->
+        <section id="page-profile" class="hide">
+            <div id="profile-unauthenticated" class="max-w-md mx-auto bg-white rounded-2xl shadow-lg p-10 text-center border border-slate-100">
+                <div class="w-20 h-20 bg-blue-50 text-blue-400 rounded-2xl flex items-center justify-center mx-auto mb-6 text-4xl">
+                    <i class="fas fa-user-lock"></i>
+                </div>
+                <h2 class="text-xl font-bold text-slate-800 mb-2">Anda Belum Masuk</h2>
+                <p class="text-slate-400 text-sm mb-8 leading-relaxed">
+                    Silakan masuk untuk mengakses profil, mengatur alamat pengiriman, dan memantau riwayat transaksi Anda.
+                </p>
+                <div class="space-y-3">
+                    <button onclick="goToAuth(true)"
+                        class="w-full bg-blue-600 text-white py-3.5 rounded-xl font-bold text-sm hover:bg-blue-700 transition shadow-md">
+                        Masuk ke Akun
+                    </button>
+                    <button onclick="goToAuth(false)"
+                        class="w-full bg-white text-blue-600 py-3.5 rounded-xl font-bold text-sm hover:bg-blue-50 transition border-2 border-blue-100">
+                        Buat Akun Baru
+                    </button>
+                </div>
+            </div>
+
+            <div id="profile-authenticated" class="hide max-w-2xl mx-auto bg-white rounded-2xl shadow-sm p-8 border border-slate-100">
+                <div class="flex items-center space-x-4 mb-8 pb-6 border-b border-slate-100">
+                    <div id="profile-initial" class="w-16 h-16 bg-blue-600 text-white rounded-2xl flex items-center justify-center text-3xl font-black shadow">U</div>
+                    <div>
+                        <h2 id="profile-display-name" class="text-xl font-bold text-slate-800">Pengguna</h2>
+                        <p id="profile-display-email" class="text-slate-400 text-sm mt-0.5">email@toko-elektro.id</p>
+                    </div>
+                </div>
+
+                <h3 class="font-bold text-slate-600 mb-5 flex items-center text-xs uppercase tracking-wider">
+                    <i class="fas fa-map-marker-alt mr-2 text-blue-500"></i> Informasi Pengiriman
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-1.5">Nama Lengkap</label>
+                        <input type="text" id="prof-name" placeholder="Masukkan nama lengkap"
+                            class="w-full p-3.5 bg-slate-50 rounded-xl border border-slate-200 text-sm outline-none focus:ring-2 focus:ring-blue-500 transition">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-1.5">Nomor HP / WhatsApp</label>
+                        <input type="text" id="prof-phone" placeholder="08xxxxxxxxxx"
+                            class="w-full p-3.5 bg-slate-50 rounded-xl border border-slate-200 text-sm outline-none focus:ring-2 focus:ring-blue-500 transition">
+                    </div>
+                    <div class="md:col-span-2">
+                        <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-1.5">Alamat Lengkap Tujuan</label>
+                        <textarea id="prof-address" rows="3" placeholder="Jl. Contoh No. 1, Kelurahan, Kecamatan, Kota, Kode Pos"
+                            class="w-full p-3.5 bg-slate-50 rounded-xl border border-slate-200 text-sm outline-none focus:ring-2 focus:ring-blue-500 transition resize-none"></textarea>
+                    </div>
+                </div>
+
+                <div class="flex space-x-3">
+                    <button onclick="saveProfile()"
+                        class="flex-1 bg-blue-600 text-white py-3.5 rounded-xl font-bold text-sm hover:bg-blue-700 transition shadow-md">
+                        Simpan Perubahan
+                    </button>
+                    <button onclick="logout()"
+                        class="px-6 bg-red-50 text-red-500 py-3.5 rounded-xl font-bold text-sm hover:bg-red-100 transition border border-red-100">
+                        <i class="fas fa-sign-out-alt mr-1"></i> Keluar
+                    </button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- SIDEBAR KERANJANG -->
+    <div id="cartSidebar" class="fixed inset-y-0 right-0 w-full md:w-[440px] bg-white shadow-2xl z-[60] transform translate-x-full transition-transform duration-300 flex flex-col border-l border-slate-100">
+        <div class="p-5 flex justify-between items-center bg-slate-800 text-white">
+            <div>
+                <h3 class="text-base font-bold">Keranjang Belanja</h3>
+                <p class="text-slate-400 text-xs mt-0.5">Periksa pesanan Anda sebelum checkout</p>
+            </div>
+            <button onclick="toggleCart()" class="text-2xl hover:text-red-400 transition w-8 h-8 flex items-center justify-center">&times;</button>
+        </div>
+
+        <div id="cartItems" class="flex-1 overflow-y-auto p-5 space-y-3 bg-slate-50"></div>
+
+        <div class="p-6 bg-white border-t border-slate-100 shadow-[0_-8px_24px_rgba(0,0,0,0.06)]">
+            <div id="payment-section" class="hide mb-5 p-4 bg-blue-50 rounded-2xl border border-blue-100">
+                <p class="font-bold text-xs mb-3 text-blue-700 uppercase tracking-wider">Pilih Metode Pembayaran:</p>
+                <div class="space-y-2">
+                    <label class="flex items-center space-x-3 p-3 bg-white rounded-xl cursor-pointer hover:border-blue-500 border-2 border-transparent transition shadow-sm text-sm">
+                        <input type="radio" name="pay-method" value="Transfer Bank" checked class="accent-blue-600">
+                        <span class="font-semibold text-slate-700">Transfer Bank (BCA / Mandiri)</span>
+                    </label>
+                    <label class="flex items-center space-x-3 p-3 bg-white rounded-xl cursor-pointer hover:border-blue-500 border-2 border-transparent transition shadow-sm text-sm">
+                        <input type="radio" name="pay-method" value="E-Wallet" class="accent-blue-600">
+                        <span class="font-semibold text-slate-700">Dompet Digital (Dana / OVO / GoPay)</span>
+                    </label>
+                    <label class="flex items-center space-x-3 p-3 bg-white rounded-xl cursor-pointer hover:border-blue-500 border-2 border-transparent transition shadow-sm text-sm">
+                        <input type="radio" name="pay-method" value="COD" class="accent-blue-600">
+                        <span class="font-semibold text-slate-700">Bayar di Tempat (COD)</span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="space-y-2.5 mb-5 text-sm">
+                <div class="flex justify-between text-slate-500">
+                    <span>Subtotal</span>
+                    <span id="subtotalText" class="font-semibold">Rp0</span>
+                </div>
+                <div class="flex justify-between text-emerald-600">
+                    <span>Diskon (5% belanja &gt; Rp100.000)</span>
+                    <span id="diskonText" class="font-bold">- Rp0</span>
+                </div>
+                <div class="flex justify-between text-slate-500">
+                    <span>Pajak Layanan (11%)</span>
+                    <span id="pajakText" class="font-semibold">Rp0</span>
+                </div>
+                <div class="flex justify-between font-black text-2xl border-t-2 border-dashed border-slate-100 pt-4 mt-3">
+                    <span class="text-slate-700 text-base self-center font-bold">Total Pembayaran</span>
+                    <span id="totalText" class="text-blue-600">Rp0</span>
+                </div>
+            </div>
+
+            <button id="btn-checkout-process" onclick="handleCheckoutClick()"
+                class="w-full bg-blue-600 text-white py-4 rounded-2xl font-bold text-sm hover:bg-blue-700 transition shadow-xl">
+                Lanjut ke Pembayaran
+            </button>
+        </div>
+    </div>
+
+    <!-- OVERLAY -->
+    <div id="overlay" onclick="toggleCart()" class="fixed inset-0 bg-slate-900 bg-opacity-40 backdrop-blur-sm z-50 hide"></div>
+
+    <!-- MODAL SUKSES -->
+    <div id="successModal" class="fixed inset-0 flex items-center justify-center z-[100] px-4 hide">
+        <div class="absolute inset-0 bg-slate-900 bg-opacity-70 backdrop-blur-md"></div>
+        <div class="bg-white rounded-3xl p-10 max-w-sm w-full relative text-center animate-bounce-short shadow-2xl">
+            <button onclick="closeSuccessToHome()" class="absolute top-5 right-5 text-slate-300 hover:text-red-400 text-2xl transition">&times;</button>
+            <div class="w-20 h-20 bg-emerald-50 text-emerald-500 rounded-2xl flex items-center justify-center mx-auto mb-6 text-4xl shadow-inner">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <h3 class="text-2xl font-black text-slate-800 mb-2">Pesanan Diterima!</h3>
+            <p class="text-slate-400 text-sm mb-8 leading-relaxed">
+                Pesanan Anda sedang kami proses. Terima kasih telah berbelanja di Toko Elektro.
+            </p>
+            <button onclick="closeSuccessModal()"
+                class="w-full bg-slate-800 text-white py-4 rounded-xl font-bold text-sm shadow-lg hover:bg-black transition mb-3">
+                Lihat Riwayat Transaksi
+            </button>
+            <button onclick="closeSuccessToHome()"
+                class="w-full bg-slate-50 text-slate-500 py-3 rounded-xl font-semibold text-sm hover:bg-slate-100 transition">
+                Kembali Belanja
+            </button>
+        </div>
+    </div>
+
+    <!-- MODAL ULASAN -->
+    <div id="reviewModal" class="fixed inset-0 flex items-center justify-center z-[150] px-4 hide">
+        <div class="absolute inset-0 bg-slate-900 bg-opacity-50 backdrop-blur-sm" onclick="closeReviewModal()"></div>
+        <div class="bg-white rounded-2xl w-full max-w-md relative shadow-2xl flex flex-col" style="max-height:90vh">
+            <div class="flex justify-between items-center px-5 pt-5 pb-4 border-b border-slate-100 flex-shrink-0">
+                <h3 class="font-bold text-slate-800 text-base">Komentar & Ulasan</h3>
+                <button onclick="closeReviewModal()" class="text-2xl text-slate-300 hover:text-red-400 transition leading-none">&times;</button>
+            </div>
+            <div id="reviewModalContent" class="overflow-y-auto p-5 flex-1"></div>
+        </div>
+    </div>
+
+    <!-- MODAL RESET PASSWORD -->
+    <div id="forgotModal" class="fixed inset-0 flex items-center justify-center z-[200] px-4 hide">
+        <div class="absolute inset-0 bg-slate-900 bg-opacity-50 backdrop-blur-sm" onclick="closeForgotModal()"></div>
+        <div class="bg-white rounded-2xl w-full max-w-sm relative shadow-2xl p-7">
+
+            <button onclick="closeForgotModal()" class="absolute top-4 right-4 text-2xl text-slate-300 hover:text-red-400 transition leading-none">&times;</button>
+
+            <!-- STEP 1: INPUT EMAIL -->
+            <div id="forgot-step-1">
+                <div class="text-center mb-6">
+                    <div class="w-14 h-14 bg-blue-50 text-blue-500 rounded-2xl flex items-center justify-center mx-auto mb-3 text-2xl">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <h3 class="font-bold text-slate-800 text-lg">Reset Kata Sandi</h3>
+                    <p class="text-slate-400 text-sm mt-1">Masukkan email yang terdaftar untuk mereset kata sandi</p>
+                </div>
+
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-500 mb-1.5 uppercase tracking-wider">Alamat Email Terdaftar</label>
+                        <input type="email" id="forgot-email" placeholder="contoh@email.com"
+                            class="w-full p-3.5 bg-slate-50 border border-slate-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-blue-500 transition">
+                    </div>
+
+                    <!-- Pesan error step 1 -->
+                    <div id="forgot-error" class="hide bg-red-50 border border-red-100 text-red-500 text-xs font-semibold px-4 py-3 rounded-xl flex items-center gap-2">
+                        <i class="fas fa-exclamation-circle flex-shrink-0"></i>
+                        <span></span>
+                    </div>
+
+                    <button onclick="checkForgotEmail()"
+                        class="w-full bg-blue-600 text-white py-3.5 rounded-xl font-bold text-sm hover:bg-blue-700 transition shadow-md">
+                        Cek Email
+                    </button>
+                    <button onclick="closeForgotModal()"
+                        class="w-full bg-slate-50 text-slate-500 py-3 rounded-xl font-semibold text-sm hover:bg-slate-100 transition">
+                        Batal
+                    </button>
+                </div>
+            </div>
+
+            <!-- STEP 2: INPUT PASSWORD BARU -->
+            <div id="forgot-step-2" class="hide">
+                <div class="text-center mb-6">
+                    <div class="w-14 h-14 bg-emerald-50 text-emerald-500 rounded-2xl flex items-center justify-center mx-auto mb-3 text-2xl">
+                        <i class="fas fa-lock-open"></i>
+                    </div>
+                    <h3 class="font-bold text-slate-800 text-lg">Buat Kata Sandi Baru</h3>
+                    <p class="text-slate-400 text-sm mt-1">Email ditemukan. Silakan buat kata sandi baru untuk akun Anda.</p>
+                </div>
+
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-500 mb-1.5 uppercase tracking-wider">Kata Sandi Baru</label>
+                        <input type="password" id="new-pass" placeholder="Minimal 6 karakter"
+                            class="w-full p-3.5 bg-slate-50 border border-slate-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-blue-500 transition">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-500 mb-1.5 uppercase tracking-wider">Konfirmasi Kata Sandi</label>
+                        <input type="password" id="confirm-pass" placeholder="Ulangi kata sandi baru"
+                            class="w-full p-3.5 bg-slate-50 border border-slate-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-blue-500 transition">
+                    </div>
+
+                    <!-- Pesan error step 2 -->
+                    <div id="forgot-error-2" class="hide bg-red-50 border border-red-100 text-red-500 text-xs font-semibold px-4 py-3 rounded-xl flex items-center gap-2">
+                        <i class="fas fa-exclamation-circle flex-shrink-0"></i>
+                        <span></span>
+                    </div>
+
+                    <button onclick="submitNewPassword()"
+                        class="w-full bg-blue-600 text-white py-3.5 rounded-xl font-bold text-sm hover:bg-blue-700 transition shadow-md">
+                        Simpan Kata Sandi Baru
+                    </button>
+                    <button onclick="showForgotStep(1)"
+                        class="w-full bg-slate-50 text-slate-500 py-3 rounded-xl font-semibold text-sm hover:bg-slate-100 transition">
+                        &larr; Kembali
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

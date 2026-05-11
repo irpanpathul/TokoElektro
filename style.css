@@ -1,0 +1,84 @@
+:root {
+    --blue-primary: #1d4ed8;
+    --blue-dark: #1e3a8a;
+    --blue-light: #dbeafe;
+    --blue-mid: #2563eb;
+    --black: #0f172a;
+    --gray-dark: #1e293b;
+    --gray-mid: #475569;
+    --gray-soft: #94a3b8;
+    --gray-line: #e2e8f0;
+    --gray-bg: #f1f5f9;
+    --white: #ffffff;
+    --accent-amber: #f59e0b;
+    --accent-green: #10b981;
+    --accent-red: #ef4444;
+}
+
+* { font-family: 'Plus Jakarta Sans', 'Segoe UI', sans-serif; box-sizing: border-box; }
+body { background-color: var(--gray-bg); color: var(--black); }
+
+.nav-active { color: var(--blue-mid) !important; border-bottom: 2.5px solid var(--blue-mid); }
+.logo-box { background: linear-gradient(135deg, var(--blue-dark), var(--blue-mid)); }
+.hide { display: none !important; }
+
+.product-card { transition: transform 0.25s ease, box-shadow 0.25s ease; }
+.product-card:hover { transform: translateY(-5px); box-shadow: 0 16px 40px rgba(29,78,216,0.13); }
+
+@keyframes bounce-short {
+    0%, 100% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(-8px) scale(1.02); }
+}
+.animate-bounce-short { animation: bounce-short 0.4s ease-in-out; }
+
+/* BINTANG */
+.star-btn { cursor: pointer; font-size: 24px; color: #cbd5e1; transition: color 0.15s; line-height: 1; background: none; border: none; padding: 0 2px; }
+.star-btn:hover, .star-btn.active { color: var(--accent-amber); }
+.star-display { color: var(--accent-amber); font-size: 13px; }
+.star-empty { color: #cbd5e1; font-size: 13px; }
+
+/* BADGE TOKO */
+.seller-badge {
+    display: inline-flex; align-items: center; gap: 4px;
+    background: var(--blue-light); color: var(--blue-primary);
+    font-size: 10px; font-weight: 700; padding: 3px 8px;
+    border-radius: 20px; border: 1px solid #bfdbfe;
+}
+.seller-badge i { font-size: 9px; }
+
+/* KOMENTAR */
+.comment-item {
+    background: var(--gray-bg);
+    border-radius: 12px;
+    padding: 10px 12px;
+    border: 1px solid var(--gray-line);
+}
+.comment-avatar {
+    width: 30px; height: 30px;
+    background: var(--blue-mid);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    color: white; font-size: 12px; font-weight: 700;
+    flex-shrink: 0;
+}
+
+/* INFO TOKO DI MODAL */
+.seller-info-card {
+    background: white;
+    border: 1px solid var(--gray-line);
+    border-radius: 16px;
+    padding: 14px 16px;
+}
+
+/* INPUT SPIN */
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button { opacity: 1; }
+
+/* SCROLLBAR KERANJANG */
+#cartItems::-webkit-scrollbar { width: 5px; }
+#cartItems::-webkit-scrollbar-track { background: transparent; }
+#cartItems::-webkit-scrollbar-thumb { background: var(--gray-line); border-radius: 10px; }
+
+/* SCROLLBAR REVIEW LIST */
+#reviewList::-webkit-scrollbar { width: 4px; }
+#reviewList::-webkit-scrollbar-thumb { background: var(--gray-line); border-radius: 10px; }
